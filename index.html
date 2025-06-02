@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorador de IA</title>
+  <link rel="stylesheet" href="./Styles/style.css">
+  <!-- Fuente -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Explorador de Herramientas de IA</h1>
+    </header>
+    <!-- Buscador -->
+    <div class="search-container">
+      <input type="text" id="buscador" placeholder="Buscar herramientas por nombre o categoría...">
+    </div>
+
+    <div id="contenedor-botones">
+      <!-- Simbolo de carga -->
+      <div class="loader">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Btn para regresar arriba -->
+  <button id="top-btn" title="Ir al inicio">↑</button>
+  <!-- Modal -->
+  <div id="modal" class="modal">
+      <div class="modal-contenido" id="modal-contenido">
+        <button onclick="cerrarModal()">×</button>
+        <div id="detalle"></div>
+      </div>
+  </div>
+
+  <script src="./scripts/script.js"></script>
+</body>
+</html>
