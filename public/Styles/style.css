@@ -365,3 +365,81 @@ h1 {
   animation: fadeIn 0.3s ease forwards;
   opacity: 0;
 }
+.boton-ai.importante {
+  background: linear-gradient(135deg, #f5f7ff, #e3f2fd);
+  border: 2px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+
+.boton-ai.importante::after {
+  content: '★';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: var(--danger);
+  font-size: 12px;
+  text-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+
+/* Opcional: para un efecto más llamativo */
+.boton-ai.importante:hover {
+  background: linear-gradient(135deg, #e3f2fd, #d4e6ff);
+  border-color: var(--secondary);
+}
+
+/* Agrega esto a tu CSS */
+#important-btn {
+  position: absolute;
+  top: 12px;
+  right: 50px;
+  background: none;
+  color: var(--gray);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-size: 20px;
+}
+
+#important-btn.important {
+  color: var(--danger);
+}
+
+#important-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Estilos para feedback */
+.feedback {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+}
+
+.feedback.success {
+  background-color: #4CAF50;
+}
+
+.feedback.error {
+  background-color: #F44336;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+

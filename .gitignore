@@ -1,0 +1,6 @@
+# Archivos y carpetas a ignorar
+node_modules/
+.env
+.DS_Store
+dist/
+*.log
