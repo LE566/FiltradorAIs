@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const PORT = 3000;
@@ -86,6 +87,28 @@ app.get('/api/tools', async (req, res) => {
       success: false,
       message: 'Error al cargar datos desde Google Sheets'
     });
+  }
+});
+
+
+// Ruta para mostrar las imagenes en localhost solo para desarrollo
+app.get('/api/drive-image', async (req, res) => {
+  try {
+    const { id } = req.query;
+    const driveUrl = `https://drive.google.com/uc?export=view&id=${id}`;
+    
+    const response = await axios.get(driveUrl, {
+      responseType: 'arraybuffer',
+      headers: {
+        'Referer': 'https://drive.google.com/'
+      }
+    });
+
+    res.set('Content-Type', response.headers['content-type']);
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error al obtener imagen:', error);
+    res.status(500).send('Error al cargar imagen');
   }
 });
 
