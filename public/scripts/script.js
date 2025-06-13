@@ -58,7 +58,6 @@ function obtenerLinkLogo(link) {
 
 
 // Función para mostrar el detalle de la herramienta en el modal
-
 function mostrarDetalle(item) {
   const detalle = document.getElementById('detalle');
   detalle.innerHTML = `
