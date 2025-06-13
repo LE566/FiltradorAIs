@@ -31,9 +31,9 @@ app.post('/api/update-importance', async (req, res) => {
       body: JSON.stringify({
         action: 'updateImportance',
         id: req.body.id,
-        important: req.body.important ? 'Si' : 'No'
+        important: req.body.important ? 'Si' : 'No' 
       }),
-      redirect: 'manual' // Manejar redirecciones manualmente
+      redirect: 'manual' 
     });
 
     // Manejar posible redirección
@@ -53,17 +53,16 @@ app.post('/api/update-importance', async (req, res) => {
       throw new Error('Respuesta no válida del servidor');
     }
 
-    // Estructura de respuesta específica que solicitaste
+    
     res.json({
-      status: data.status || 'success', // Mantiene compatibilidad con GAS
-      success: true,                    // Para tu frontend
+      status: data.status || 'success', 
+      success: true,                    
       tool: req.body.id,
       newValue: req.body.important ? 'Si' : 'No',
-      // Incluimos los datos originales por si acaso
       originalResponse: data
     });
 
-  } catch (error) {
+  } catch (error) { 
     console.error('Error en /api/update-importance:', error);
     res.status(500).json({
       status: 'error',

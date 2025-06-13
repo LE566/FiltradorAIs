@@ -1,54 +1,56 @@
-const apiUrl = '/api'; // Base URL para las peticiones al servidor Express
-let herramientas = [];
+const apiUrl = '/api'; // URL base de la API
+let herramientas = []; // Array para almacenar las herramientas
 
 // Función para mostrar las herramientas en la interfaz
 function mostrarHerramientas(filtradas) {
-    const contenedor = document.getElementById('contenedor-botones');
-    contenedor.innerHTML = '';
-    
-    if (filtradas.length === 0) {
-        contenedor.innerHTML = '<div class="no-results">No se encontraron herramientas que coincidan con tu búsqueda</div>';
-        return;
+  const contenedor = document.getElementById('contenedor-botones');
+  contenedor.innerHTML = '';
+  
+  if (filtradas.length === 0) {
+    contenedor.innerHTML = '<div class="no-results">No se encontraron herramientas que coincidan con tu búsqueda</div>';
+    return;
+  }
+  
+  filtradas.forEach((item, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'boton-ai';
+    if (item.Importante === "Si") {
+      btn.classList.add('importante');
     }
-    
-    filtradas.forEach((item, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'boton-ai';
-        if (item.Importante === "Si") {
-            btn.classList.add('importante');
-        }
-        btn.innerHTML = `
-        <img src="${obtenerLinkLogo(item.Logo)}" alt="${item.Nombre}" loading="lazy">
-        <span class="tool-name">${item.Nombre}</span>
-        `;
-        btn.onclick = () => mostrarDetalle(item);
-        btn.style.animationDelay = `${index * 0.05}s`;
-        contenedor.appendChild(btn);
-    });
+    btn.innerHTML = `
+    <img src="${obtenerLinkLogo(item.Logo)}" alt="${item.Nombre}" loading="lazy">
+    <span class="tool-name">${item.Nombre}</span>
+    `;
+    btn.onclick = () => mostrarDetalle(item);
+    btn.style.animationDelay = `${index * 0.05}s`;
+    contenedor.appendChild(btn);
+    console.log('Logo generado:', obtenerLinkLogo(item.Logo));
+  });
 }
 
 // Función para obtener el enlace del logo
 function obtenerLinkLogo(link) {
-    if (!link) {
-        return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><rect width='60' height='60' rx='10' fill='%23f0f2f5'/><text x='30' y='35' font-family='Arial' font-size='10' text-anchor='middle' fill='%236c757d'>No logo</text></svg>`;
-    }
+  if (!link) { // Si no hay enlace, retorna un SVG por defecto
+    return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><rect width='60' height='60' rx='10' fill='%23f0f2f5'/><text x='30' y='35' font-family='Arial' font-size='10' text-anchor='middle' fill='%236c757d'>No logo</text></svg>`;
+  }
 
-    // Extracción mejorada del ID para cualquier formato de enlace de Drive
-    const match = link.match(/(?:\/d\/|id=)([^\/\?&]+)/) || link.match(/([a-zA-Z0-9_-]{25,})/);
-    if (!match) return link;
+  // Extracción mejorada del ID para cualquier formato de enlace de Drive
+  const match = link.match(/(?:\/d\/|id=)([^\/\?&]+)/) || link.match(/([a-zA-Z0-9_-]{25,})/);
+  if (!match) return link;
 
-    const fileId = match[1];
-    const cacheBuster = Date.now();
+  const fileId = match[1];
+  const cacheBuster = Date.now();
 
-    // Estrategia de respaldo múltiple
-    const urlOptions = [
-        `https://lh3.googleusercontent.com/d/${fileId}=w200-h200?rand=${cacheBuster}`, // Servidor de imágenes de Google
-        `https://drive.google.com/thumbnail?id=${fileId}&sz=w200-h200&v=${cacheBuster}`, // Vista miniatura
-        `https://docs.google.com/uc?id=${fileId}&export=download&v=${cacheBuster}`, // Enlace de descarga
-        `https://drive.google.com/uc?export=view&id=${fileId}&v=${cacheBuster}` // Enlace directo alternativo
-    ];
+  // Estrategia de respaldo múltiple
+  const urlOptions = [
+    `https://lh3.googleusercontent.com/d/${fileId}=w200-h200?rand=${cacheBuster}`, // Servidor de imágenes de Google
+    `https://drive.google.com/thumbnail?id=${fileId}&sz=w200-h200&v=${cacheBuster}`, // Vista miniatura
+    `https://docs.google.com/uc?id=${fileId}&export=download&v=${cacheBuster}`, // Enlace de descarga
+    `https://drive.google.com/uc?export=view&id=${fileId}&v=${cacheBuster}` // Enlace directo alternativo
+  ];
 
-    return urlOptions[0]; // Usamos la primera opción como principal
+
+  return urlOptions[0]; // Se usa la primera opción como principal
 }
 
 // Función para mostrar el detalle de la herramienta en el modal
@@ -79,7 +81,7 @@ function mostrarDetalle(item) {
   const importantBtn = document.getElementById('important-btn');
   importantBtn.onclick = async () => {
     await marcarComoImportante(item.Nombre, !isImportant);
-    // Actualizamos el modal con los nuevos datos
+    // Actualiza el modal con los nuevos datos
     mostrarDetalle({
       ...item,
       Importante: !isImportant ? 'Si' : 'No'
@@ -108,13 +110,13 @@ function cerrarModal() {
 
 // Función para filtrar herramientas
 function filtrar() {
-    const texto = document.getElementById('buscador').value.toLowerCase();
-    const filtradas = herramientas.filter(item =>
-        item.Nombre.toLowerCase().includes(texto) ||
-        item.Categorias.toLowerCase().includes(texto) ||
-        item.Descripcion.toLowerCase().includes(texto)
-    );
-    mostrarHerramientas(filtradas);
+  const texto = document.getElementById('buscador').value.toLowerCase();
+  const filtradas = herramientas.filter(item =>
+    item.Nombre.toLowerCase().includes(texto) ||
+    item.Categorias.toLowerCase().includes(texto) ||
+    item.Descripcion.toLowerCase().includes(texto)
+  );
+  mostrarHerramientas(filtradas);
 }
 
 // Función para actualizar el botón de importante
@@ -142,17 +144,17 @@ async function marcarComoImportante(id, esImportante) {
   importantBtn.disabled = true;
 
   try {
-    // 1. Actualiza el estado LOCAL primero
+    // Actualiza el estado LOCAL primero
     const herramientaIndex = herramientas.findIndex(h => h.Nombre === id);
     if (herramientaIndex !== -1) {
       herramientas[herramientaIndex].Importante = esImportante ? "Si" : "No";
     }
 
-    // 2. Actualización visual inmediata
+    // Actualización visual inmediata
     actualizarBotonImportante(esImportante);
     actualizarTarjetaVisual(id, esImportante);
 
-    // 3. Enviar cambio al servidor
+    // Envia cambio al servidor
     const response = await fetch(`${apiUrl}/update-importance`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -161,7 +163,7 @@ async function marcarComoImportante(id, esImportante) {
 
     if (!response.ok) throw new Error("Error en el servidor");
     
-    // 4. Feedback visual
+    // Feedback visual
     mostrarFeedback(esImportante ? '★ Marcado como importante' : '☆ Quitado de importantes', 'success');
     
   } catch (error) {
@@ -179,32 +181,32 @@ async function marcarComoImportante(id, esImportante) {
 }
 // Evento para el botón "Ir arriba"
 window.addEventListener('scroll', () => {
-    const topBtn = document.getElementById('top-btn');
-    topBtn.classList.toggle('visible', window.scrollY > 300);
+  const topBtn = document.getElementById('top-btn');
+  topBtn.classList.toggle('visible', window.scrollY > 300);
 });
 
 document.getElementById('top-btn').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 // Carga inicial de datos
 document.addEventListener('DOMContentLoaded', () => {
-    fetch(`${apiUrl}/tools`)
-        .then(res => {
-            if (!res.ok) throw new Error('Error en la respuesta del servidor');
-            return res.json();
-        })
-        .then(data => {
-            console.log('Datos recibidos:', data);
-            herramientas = data;
-            mostrarHerramientas(herramientas);
-            document.getElementById('buscador').addEventListener('input', filtrar);
-        })
-        .catch(err => {
-            console.error('Error al cargar datos:', err);
-            document.getElementById('contenedor-botones').innerHTML = 
-                '<div class="no-results">Error al cargar los datos. Por favor intenta más tarde.</div>';
-        });
+  fetch(`${apiUrl}/tools`)
+    .then(res => {
+      if (!res.ok) throw new Error('Error en la respuesta del servidor');
+      return res.json();
+    })
+    .then(data => {
+      console.log('Datos recibidos:', data);
+      herramientas = data;
+      mostrarHerramientas(herramientas);
+      document.getElementById('buscador').addEventListener('input', filtrar);
+    })
+    .catch(err => {
+      console.error('Error al cargar datos:', err);
+      document.getElementById('contenedor-botones').innerHTML = 
+          '<div class="no-results">Error al cargar los datos. Por favor intenta más tarde.</div>';
+    });
 });
 // Agrega esta función al inicio de tu script.js
 function mostrarFeedback(mensaje, tipo) {

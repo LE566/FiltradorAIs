@@ -1,3 +1,4 @@
+/* Paleta de colores y variables globales */
 :root {
   --primary: #4361ee;
   --secondary: #3f37c9;
@@ -11,6 +12,7 @@
   --transition: all 0.3s ease;
 }
 
+/* Reset y estilos base */
 * {
   box-sizing: border-box;
 }
@@ -32,6 +34,7 @@ body {
   width: 100%;
 }
 
+/* Header y título principal */
 header {
   text-align: center;
   margin-bottom: 20px;
@@ -48,6 +51,7 @@ h1 {
   color: transparent;
 }
 
+/* Buscador */
 .search-container {
   display: flex;
   justify-content: center;
@@ -80,6 +84,7 @@ h1 {
   box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.25);
 }
 
+/* Contenedor de botones de IA */
 #contenedor-botones {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
@@ -88,6 +93,7 @@ h1 {
   width: 100%;
 }
 
+/* Botón de IA */
 .boton-ai {
   background: white;
   border: none;
@@ -102,6 +108,9 @@ h1 {
   text-decoration: none;
   color: var(--dark);
   width: 100%;
+  /* Animación de aparición */
+  animation: fadeIn 0.3s ease forwards;
+  opacity: 0;
 }
 
 .boton-ai:hover {
@@ -130,6 +139,59 @@ h1 {
   width: 100%;
 }
 
+/* Botón de IA importante */
+.boton-ai.importante {
+  background: linear-gradient(135deg, #f5f7ff, #e3f2fd);
+  border: 2px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+
+.boton-ai.importante::after {
+  content: '★';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: var(--danger);
+  font-size: 12px;
+  text-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover para importante */
+.boton-ai.importante:hover {
+  background: linear-gradient(135deg, #e3f2fd, #d4e6ff);
+  border-color: var(--secondary);
+}
+
+/* Botón para marcar como importante */
+#important-btn {
+  position: absolute;
+  top: 12px;
+  right: 50px;
+  background: none;
+  color: var(--gray);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-size: 20px;
+}
+
+#important-btn.important {
+  color: var(--danger);
+}
+
+#important-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Mensaje cuando no hay resultados */
 .no-results {
   grid-column: 1 / -1;
   text-align: center;
@@ -138,6 +200,7 @@ h1 {
   font-size: 1.1rem;
 }
 
+/* Modal para detalles de IA */
 .modal {
   display: none;
   position: fixed;
@@ -239,6 +302,7 @@ h1 {
   transform: rotate(90deg);
 }
 
+/* Loader de carga */
 .loader {
   display: flex;
   justify-content: center;
@@ -270,6 +334,7 @@ h1 {
   }
 }
 
+/* Botón para volver arriba */
 #top-btn {
   position: fixed;
   bottom: 20px;
@@ -297,6 +362,7 @@ h1 {
   transform: translateY(-3px);
 }
 
+/* Etiquetas de herramientas */
 .tag {
   display: inline-block;
   background: #e9ecef;
@@ -308,6 +374,7 @@ h1 {
   margin-bottom: 5px;
 }
 
+/* Media queries para responsividad */
 @media (min-width: 768px) {
   body {
     padding: 20px;
@@ -356,67 +423,13 @@ h1 {
   }
 }
 
+/* Animación de fadeIn para los botones */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.boton-ai {
-  animation: fadeIn 0.3s ease forwards;
-  opacity: 0;
-}
-.boton-ai.importante {
-  background: linear-gradient(135deg, #f5f7ff, #e3f2fd);
-  border: 2px solid var(--accent);
-  position: relative;
-  overflow: hidden;
-}
-
-.boton-ai.importante::after {
-  content: '★';
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  color: var(--danger);
-  font-size: 12px;
-  text-shadow: 0 0 3px rgba(0,0,0,0.2);
-}
-
-/* Opcional: para un efecto más llamativo */
-.boton-ai.importante:hover {
-  background: linear-gradient(135deg, #e3f2fd, #d4e6ff);
-  border-color: var(--secondary);
-}
-
-/* Agrega esto a tu CSS */
-#important-btn {
-  position: absolute;
-  top: 12px;
-  right: 50px;
-  background: none;
-  color: var(--gray);
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-  font-size: 20px;
-}
-
-#important-btn.important {
-  color: var(--danger);
-}
-
-#important-btn:hover {
-  transform: scale(1.2);
-}
-
-/* Estilos para feedback */
+/* Estilos para feedback de acciones */
 .feedback {
   position: fixed;
   bottom: 20px;
@@ -442,4 +455,3 @@ h1 {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
-
