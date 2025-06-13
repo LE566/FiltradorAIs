@@ -29,28 +29,33 @@ function mostrarHerramientas(filtradas) {
 
 // Función para obtener el enlace del logo
 function obtenerLinkLogo(link) {
-  if (!link) { // Si no hay enlace, retorna un SVG por defecto
+  if (!link) {
     return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><rect width='60' height='60' rx='10' fill='%23f0f2f5'/><text x='30' y='35' font-family='Arial' font-size='10' text-anchor='middle' fill='%236c757d'>No logo</text></svg>`;
   }
 
-  // Extracción mejorada del ID para cualquier formato de enlace de Drive
   const match = link.match(/(?:\/d\/|id=)([^\/\?&]+)/) || link.match(/([a-zA-Z0-9_-]{25,})/);
   if (!match) return link;
 
   const fileId = match[1];
   const cacheBuster = Date.now();
 
-  // Estrategia de respaldo múltiple
   const urlOptions = [
-    `https://lh3.googleusercontent.com/d/${fileId}=w200-h200?rand=${cacheBuster}`, // Servidor de imágenes de Google
-    `https://drive.google.com/thumbnail?id=${fileId}&sz=w200-h200&v=${cacheBuster}`, // Vista miniatura
-    `https://docs.google.com/uc?id=${fileId}&export=download&v=${cacheBuster}`, // Enlace de descarga
-    `https://drive.google.com/uc?export=view&id=${fileId}&v=${cacheBuster}` // Enlace directo alternativo
+    `https://lh3.googleusercontent.com/d/${fileId}=w200-h200?rand=${cacheBuster}`,
+    `https://drive.google.com/thumbnail?id=${fileId}&sz=w200-h200&v=${cacheBuster}`,
+    `https://docs.google.com/uc?id=${fileId}&export=download&v=${cacheBuster}`,
+    `https://drive.google.com/uc?export=view&id=${fileId}&v=${cacheBuster}`
   ];
 
+  // Devuelve un <img> que usa fallback si falla la carga
+  const fallbackHandler = `
+    this.onerror=null;
+    this.src='${urlOptions[1]}';
+    this.onerror=function(){this.src='${urlOptions[2]}';};
+  `;
 
-  return urlOptions[0]; // Se usa la primera opción como principal
+  return `${urlOptions[0]}" onerror="${fallbackHandler}`;
 }
+
 
 // Función para mostrar el detalle de la herramienta en el modal
 
