@@ -24,7 +24,6 @@ function mostrarHerramientas(filtradas) {
     btn.onclick = () => mostrarDetalle(item);
     btn.style.animationDelay = `${index * 0.05}s`;
     contenedor.appendChild(btn);
-    console.log('Logo generado:', obtenerLinkLogo(item.Logo));
   });
 }
 
@@ -56,8 +55,6 @@ function obtenerLinkLogo(link) {
 // Función para mostrar el detalle de la herramienta en el modal
 
 function mostrarDetalle(item) {
-
-  
   const detalle = document.getElementById('detalle');
   detalle.innerHTML = `
     <div class="modal-header">
@@ -104,8 +101,8 @@ async function cargarDatosActualizados() {
 
 // Función para cerrar el modal
 function cerrarModal() {
-    document.getElementById('modal').style.display = 'none';
-    document.body.style.overflow = 'auto';
+  document.getElementById('modal').style.display = 'none';
+  document.body.style.overflow = 'auto';
 }
 
 // Función para filtrar herramientas
@@ -192,21 +189,20 @@ document.getElementById('top-btn').addEventListener('click', () => {
 // Carga inicial de datos
 document.addEventListener('DOMContentLoaded', () => {
   fetch(`${apiUrl}/tools`)
-    .then(res => {
-      if (!res.ok) throw new Error('Error en la respuesta del servidor');
-      return res.json();
-    })
-    .then(data => {
-      console.log('Datos recibidos:', data);
-      herramientas = data;
-      mostrarHerramientas(herramientas);
-      document.getElementById('buscador').addEventListener('input', filtrar);
-    })
-    .catch(err => {
-      console.error('Error al cargar datos:', err);
-      document.getElementById('contenedor-botones').innerHTML = 
-          '<div class="no-results">Error al cargar los datos. Por favor intenta más tarde.</div>';
-    });
+  .then(res => {
+    if (!res.ok) throw new Error('Error en la respuesta del servidor');
+    return res.json();
+  })
+  .then(data => {
+    herramientas = data;
+    mostrarHerramientas(herramientas);
+    document.getElementById('buscador').addEventListener('input', filtrar);
+  })
+  .catch(err => {
+    console.error('Error al cargar datos:', err);
+    document.getElementById('contenedor-botones').innerHTML = 
+        '<div class="no-results">Error al cargar los datos. Por favor intenta más tarde.</div>';
+  });
 });
 // Agrega esta función al inicio de tu script.js
 function mostrarFeedback(mensaje, tipo) {
